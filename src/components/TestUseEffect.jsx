@@ -21,7 +21,7 @@ const TestUseEffect = () => {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            settime(time+1);
+            settime(prev => prev + 1);
         }, 1000)
         return () => {
             clearInterval(timer);
