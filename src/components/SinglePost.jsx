@@ -4,10 +4,12 @@ import { LoginContext } from '../Context/LoginContextProvider';
 
 const SinglePost = () => {
     const login = useContext(LoginContext);
-    
+
   return (
     <div>
-        <h1>Single POST</h1>
+        <h1>the props passed by the context : 
+          {login ? " Logged in" : " Logged out"} 
+          </h1>
     </div>
   )
 }

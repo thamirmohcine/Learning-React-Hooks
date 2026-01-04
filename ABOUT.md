@@ -59,3 +59,39 @@ Create Context require 3 simple Steps :
 1 - Creating the Context 
 2 - Providing the Context 
 3 - Consuming the Context
+
+creating a context and inside the <context /> component we give it children , to be able to hold childrens and give them the accecibility to get the props whenever a child need it 
+
+# What is useRef ?
+
+useRef allows us to access DOM elements.
+
+is a React hook that lets you store a mutable value that does NOT cause a re-render when it changes.
+
+
+# What is useReducer ?
+
+useReduser is used to manage atate in our react application.
+
+in other words , useReducer works like a state managment tool .
+ 
+### what is state management ?
+
+state management is used to manage all states of application in simple way .
+
+always use he useReducer hook when you have a lot of states and methods to handle .
+useReducer is a React Hook used to manage complex state logic in a predictable way. Instead of updating state directly, you dispatch actions that describe what should happen, and a reducer function decides how the state changes based on those actions. This approach keeps all state logic in one place, makes the code easier to understand and maintain, and is especially useful when a component has multiple state values or many ways to update the same state.
+
+
+# What is useLayoutEffect ?
+
+useLayoutEffect works exactly the same as useEffect (also the same syntax).
+
+But the difference is "WHEN IT'S RUN".
+useEffect Runs After the DOM is printed on the browser
+But useLayoutEffect Run sbefor the DOM is printed on the browser
+Whenever we want to run code befor the DOM is printed
+    hight, width, or anithing related to layout 
+useLayoutEffect runs Synchronously 
+the most common use case of UseLayoutEffect is to get the dimension of the layout.
+that's why it's name useLayoutEffect

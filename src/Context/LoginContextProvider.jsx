@@ -9,7 +9,8 @@ const LoginContextProvider = ({children}) => {
     return (
     <LoginContext.Provider value={userDetails}>
         {children}
-    </LoginContext.Provider>    
+        <button onClick={() => setuserDetails(!userDetails)}>CHANGE STATE : LOGIN </button>
+    </LoginContext.Provider>
 )
 }
 
