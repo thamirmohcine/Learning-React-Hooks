@@ -5,6 +5,9 @@ import TestUseEffect from './components/TestUseEffect'
 import TestUseContext from './components/TestUseContext'
 import TestUseRef from './components/TestUseRef'
 import TestUseReducer from './components/TestUseReducer'
+import UseLayoutEffect from './components/TestUseLayoutEffect'
+import TestUseMemo from './components/TestUseMemo'
+import TestUseCallback from './components/TestUseCallback'
 
 
 function App() {
@@ -20,6 +23,12 @@ function App() {
       <TestUseRef />
       <hr class="border-t border-gray-300 my-4" />
       <TestUseReducer />
+      <hr class="border-t border-gray-300 my-4" />
+      <UseLayoutEffect />
+      <hr class="border-t border-gray-300 my-4" />
+      <TestUseMemo />
+      <hr class="border-t border-gray-300 my-4" />
+      <TestUseCallback />
     </>
   )
 }

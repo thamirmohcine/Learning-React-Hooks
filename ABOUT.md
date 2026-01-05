@@ -95,3 +95,25 @@ Whenever we want to run code befor the DOM is printed
 useLayoutEffect runs Synchronously 
 the most common use case of UseLayoutEffect is to get the dimension of the layout.
 that's why it's name useLayoutEffect
+
+# useMemo 
+## What is memorization ?
+
+Memorization is a technique for improving the performance of code .
+
+it is useful to avoid expensive calculations on every render when the returned value is not change.
+
+we perform all side effects in useEffect hook.
+All expensive  functions , calculation in use Memo hook.
+
+# useCallback hook 
+
+## What is useCallback ?
+
+useCallback is used to return Memorize function .
+
+also useful for preventing functions from being re-created on re-rendring .
+
+it is the same but the useMemo return the memorized value , and the useCallback return the Memorized function
+
+
