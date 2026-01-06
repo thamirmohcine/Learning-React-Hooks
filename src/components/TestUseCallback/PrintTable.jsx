@@ -5,8 +5,8 @@ const PrintTable = (props) => {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        setRows(calculateTable())
-    }, [calculateTable])
+        setRows(props.calculateTable())
+    }, [props.calculateTable])
 
   return (
     rows.map((rows, index) => {
@@ -15,4 +15,4 @@ const PrintTable = (props) => {
     )
 }
 
-export default PrintTable
+export default React.memo(PrintTable)

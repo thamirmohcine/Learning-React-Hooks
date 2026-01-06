@@ -1,5 +1,5 @@
 import React from 'react'
-import MainComponent from './MainComponent';
+import MainComponent from './TestUseContext/MainComponent';
 import LoginContextProvider from '../Context/LoginContextProvider';
 
 const TestUseContext = () => {

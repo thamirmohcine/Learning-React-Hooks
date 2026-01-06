@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { LoginContext } from '../Context/LoginContextProvider';
+import { LoginContext } from '../../Context/LoginContextProvider';
 
 
 const SinglePost = () => {

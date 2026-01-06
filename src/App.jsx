@@ -7,9 +7,8 @@ import TestUseRef from './components/TestUseRef'
 import TestUseReducer from './components/TestUseReducer'
 import UseLayoutEffect from './components/TestUseLayoutEffect'
 import TestUseMemo from './components/TestUseMemo'
-import TestUseCallback from './components/TestUseCallback'
-
-
+import TestUseCallback from './components/TestUseCallback/TestUseCallback'
+import TestingCostumHook from './components/CostumHooks/TestUseFetchExample'
 function App() {
 
   return (
@@ -29,6 +28,8 @@ function App() {
       <TestUseMemo />
       <hr class="border-t border-gray-300 my-4" />
       <TestUseCallback />
+      <hr class="border-t border-gray-300 my-4" />
+      <TestingCostumHook />
     </>
   )
 }
