@@ -13,6 +13,12 @@ A beginner-friendly guide to understanding and using React Hooks. This repositor
 - [useLayoutEffect](#uselayouteffect)
 - [useMemo](#usememo)
 - [useCallback](#usecallback)
+- [useActionState](#useactionstate)
+- [useDeferredValue](#usedeferredvalue)
+- [useEffectEvent](#useeffectevent)
+- [use](#use)
+- [useOptimistic](#useoptimistic)
+- [useTransition](#usetransition)
 - [Custom Hooks](#custom-hooks)
 
 ## What are Hooks?
@@ -27,9 +33,12 @@ Hooks are functions that let you use React features in functional components. In
 
 State is simply a value or variable that belongs to your component and can change over time.
 
-```javascript
-const [count, setCount] = useState(0);
+### Syntax:
 ```
+const [state, setState] = useState(initialValue);
+```
+
+- **initialValue**: The initial value of your state
 
 ## useEffect
 
@@ -45,12 +54,12 @@ Side effects are actions performed with the "outside world" - anything that reac
 - Timer functions like `setTimeout` and `setInterval`
 
 ### Syntax:
-```javascript
+```
 useEffect(callback, dependencies)
 ```
 
-- **callback**: WHAT TO RUN
-- **dependencies**: WHEN TO RUN
+- **callback**: WHAT TO RUN - the function containing your side effect logic
+- **dependencies**: WHEN TO RUN - array that controls when the effect runs
 
 ### Variations of useEffect:
 - `useEffect(callback)` - runs on every render
@@ -79,25 +88,25 @@ Creating a context requires 3 simple steps:
 2. **Providing the Context**
 3. **Consuming the Context**
 
-```javascript
-const MyContext = createContext();
-
-// Provider
-<MyContext.Provider value={data}>
-  {children}
-</MyContext.Provider>
-
-// Consumer
+### Syntax:
+```
+const MyContext = createContext(defaultValue);
 const data = useContext(MyContext);
 ```
+
+- **MyContext**: The context object created with `createContext`
+- **defaultValue**: Optional default value when no provider is found
 
 ## useRef
 
 `useRef` allows us to access DOM elements directly and store mutable values that do NOT cause a re-render when changed.
 
-```javascript
-const inputRef = useRef(null);
+### Syntax:
 ```
+const ref = useRef(initialValue);
+```
+
+- **initialValue**: The initial value stored in the ref (commonly `null` for DOM refs)
 
 ## useReducer
 
@@ -109,9 +118,14 @@ State management helps you manage all application states in a simple, organized 
 
 Use `useReducer` when you have complex state logic, multiple states, or many methods to handle state updates. It keeps all state logic in one place, making your code easier to understand and maintain.
 
-```javascript
-const [state, dispatch] = useReducer(reducer, initialState);
+### Syntax:
 ```
+const [state, dispatch] = useReducer(reducer, initialState, init);
+```
+
+- **reducer**: A function that determines how state updates (takes current state and action)
+- **initialState**: The initial state value
+- **init**: Optional function to lazily initialize state
 
 ## useLayoutEffect
 
@@ -127,6 +141,14 @@ Use `useLayoutEffect` when you need to:
 
 ⚠️ **Note:** `useLayoutEffect` runs synchronously, which can affect performance if overused.
 
+### Syntax:
+```
+useLayoutEffect(callback, dependencies)
+```
+
+- **callback**: The function to run before DOM paint
+- **dependencies**: Array controlling when the effect runs
+
 ## useMemo
 
 ### What is Memoization?
@@ -138,9 +160,13 @@ Memoization is a technique for improving code performance by caching expensive c
 - Use `useEffect` for side effects
 - Use `useMemo` for expensive functions and calculations
 
-```javascript
-const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+### Syntax:
 ```
+const memoizedValue = useMemo(calculateValue, dependencies);
+```
+
+- **calculateValue**: A function that performs the expensive calculation
+- **dependencies**: Array of values - recalculates only when these change
 
 ## useCallback
 
@@ -151,11 +177,153 @@ const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
 - `useCallback` returns a **memoized function**
 - `useCallback` can accept parameters when called, `useMemo` cannot
 
-```javascript
-const memoizedCallback = useCallback(() => {
-  doSomething(a, b);
-}, [a, b]);
+### Syntax:
 ```
+const memoizedCallback = useCallback(fn, dependencies);
+```
+
+- **fn**: The function you want to memoize
+- **dependencies**: Array of values - recreates function only when these change
+
+## useActionState
+
+`useActionState` is a Hook that helps you manage state for form actions and async operations like form submissions.
+
+### What Does It Do?
+
+It combines state management with action handling, making it perfect for forms where you need to track loading states, errors, and results from server actions or async operations.
+
+### Use Cases:
+- Form submissions with loading and error states
+- Server actions in Next.js
+- Any async action that needs state tracking
+
+### Syntax:
+```
+const [state, formAction, isPending] = useActionState(action, initialState, permalink);
+```
+
+- **action**: An async function that performs the action (receives previous state and form data)
+- **initialState**: The initial state value before any action runs
+- **permalink**: Optional URL for progressive enhancement
+- **Returns**: Current state, wrapped action function, and pending status
+
+## useDeferredValue
+
+`useDeferredValue` lets you defer updating a part of the UI to keep it responsive during heavy rendering.
+
+### What Does It Do?
+
+It creates a "delayed" version of a value that updates after more urgent updates finish. This helps prevent slow renders from blocking user interactions.
+
+### Use Cases:
+- Search input filtering large lists
+- Keeping UI responsive during expensive computations
+- Prioritizing urgent updates over visual updates
+
+### Syntax:
+```
+const deferredValue = useDeferredValue(value, initialValue);
+```
+
+- **value**: The value you want to defer
+- **initialValue**: Optional value to use during initial render
+- **Returns**: A deferred version of the value that may lag behind
+
+## useEffectEvent
+
+`useEffectEvent` (experimental) extracts non-reactive logic from useEffect, creating an event function that doesn't need to be in the dependency array.
+
+### What Does It Do?
+
+It solves the problem of needing to access latest props/state in effects without triggering re-runs. The extracted function always sees the latest values but doesn't cause the effect to re-execute.
+
+### Use Cases:
+- Reading latest props in effects without re-running the effect
+- Event handlers inside effects that need fresh values
+- Logging or analytics that shouldn't trigger effect re-runs
+
+### Syntax:
+```
+const onEvent = useEffectEvent(handler);
+```
+
+- **handler**: The function containing your event logic
+- **Returns**: A stable function reference that always uses latest values
+
+⚠️ **Note:** This is an experimental hook and may change in future React versions.
+
+## use
+
+`use` is a Hook that lets you read the value of a resource like a Promise or Context directly in your component.
+
+### What Does It Do?
+
+Unlike other hooks, `use` can be called conditionally and in loops. It suspends the component while waiting for Promises to resolve, integrating seamlessly with React Suspense.
+
+### Use Cases:
+- Reading data from Promises (async data fetching)
+- Consuming Context without nesting
+- Conditional resource reading
+
+### Syntax:
+```
+const value = use(resource);
+```
+
+- **resource**: A Promise or Context object you want to read
+- **Returns**: The resolved value of the Promise or Context value
+
+⚠️ **Note:** When used with Promises, must be paired with Suspense and Error Boundaries.
+
+## useOptimistic
+
+`useOptimistic` allows you to show optimistic UI updates while an async action is in progress.
+
+### What Does It Do?
+
+It lets you immediately show what the state *will be* after an action succeeds, before the actual server response comes back. If the action fails, it automatically reverts to the actual state.
+
+### Use Cases:
+- Instant UI feedback for like buttons or votes
+- Optimistic comment/post additions
+- Shopping cart updates
+- Any action where you want immediate visual feedback
+
+### Syntax:
+```
+const [optimisticState, addOptimistic] = useOptimistic(state, updateFn);
+```
+
+- **state**: The actual current state value
+- **updateFn**: Function that returns the optimistic state (receives current state and optimistic value)
+- **Returns**: The optimistic state to display, and a function to trigger optimistic updates
+
+## useTransition
+
+`useTransition` lets you mark state updates as non-urgent (transitions), keeping the UI responsive during slow renders.
+
+### What Does It Do?
+
+It allows you to update state without blocking the UI. Urgent updates (like typing) stay instant, while non-urgent updates (like filtering) can be delayed to keep interactions smooth.
+
+### Use Cases:
+- Filtering or searching large lists
+- Tab switching with heavy content
+- Navigation between routes
+- Any state update that triggers expensive rendering
+
+### Syntax:
+```
+const [isPending, startTransition] = useTransition();
+```
+
+- **isPending**: Boolean indicating if a transition is in progress
+- **startTransition**: Function to wrap state updates you want to mark as transitions
+
+### useTransition vs useDeferredValue:
+- `useTransition` - marks state *updates* as non-urgent
+- `useDeferredValue` - marks a *value* as non-urgent
 
 ## Custom Hooks
 
@@ -165,21 +333,9 @@ Custom Hooks are reusable functions that you create for your own use. They allow
 
 When you have logic that uses multiple hooks and you want to reuse it across your project, create a custom hook instead of duplicating code.
 
-### Example: useFetch
+### Naming Convention:
 
-```javascript
-const useFetch = (url) => {
-    const [responses, setResponses] = useState([]);
-
-    useEffect(() => {
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => setResponses(data));
-    }, [url])
-
-    return responses
-}
-```
+Custom hooks must start with "use" (e.g., `useFetch`, `useLocalStorage`, `useAuth`)
 
 ## 🚀 Getting Started
 
@@ -191,6 +347,3 @@ cd Learning-React-Hooks
 npm install
 npm run dev
 ```
-
-
-Made with ❤️ for React beginners

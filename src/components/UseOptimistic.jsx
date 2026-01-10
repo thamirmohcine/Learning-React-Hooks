@@ -1,66 +1,37 @@
-import React, { useOptimistic, useState, useRef } from 'react'
+import React, { useOptimistic, useState } from 'react'
 
-export default function ChatRoom () {
-    const [message, setmessages] = useState([
-        {text: "Welcome", id: 1, sending: false, failed: false }, 
-    ])
+export default function SimpleChat(){
 
-    const formRef = useRef(null);
+    const [messages, setMessages] = useState([{text: "Hello!", sending: false }])
 
-    const [optimisticMessage, addOpmisticMessage] = useOptimistic(
-        message, 
-        (state, newMessageText) => [
-            ...state,
-            {text: newMessageText, id: Date.now(), sending: true, failed : false},
-        ]
-    );
+    const [optimisticMessage, addOptimisticMessage] = useOptimistic(
+        messages,
+        (state, newMessage) => [...state, {text: newMessage, sending: true}]
+    )
 
-    async function sendMessageAction(formData){
-        const messageText = formData.get("message");
+    async function handleSend(formData) {
+        const text = formData.get("message");
 
-        addOpmisticMessage(messageText);
+        addOptimisticMessage(text);
 
-        formRef.current?.reset();
+        await new Promise((res => setTimeout(res, 2000)));
 
-        try{
-            await new Promise((res, rej) =>{
-                setTimeout(() => {
-                    const isSucsses = Math.random() > 0.5;
-                    isSucsses ? res() : rej(new Error("Network Error")); 
-                }, 2000);
-            });
-
-            setmessages((prev) => [
-                ...prev,
-                {text: messageText, id: Date.now(), sending: false, failed: true},
-            ]);
-        }catch (e) {
-            console.error("seding message fails");
-        }
+        setMessages(prev => [...prev, {text, sending:false}])
     }
 
     return (
-        <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h2>Chat Room </h2>
-      
-      <div style={{ border: "1px solid #ccc", height: "200px", padding: "10px", marginBottom: "10px", overflowY: "auto" }}>
-        {optimisticMessage.map((msg) => (
-          <div key={msg.id} style={{ 
-            background: msg.failed ? "#5c1a1a" : "#0b93f6",
-            marginBottom: "8px", 
-            color: msg.sending ? "#888" : "#fff",
-            textAlign: "right"
-          }}>
-            {msg.text} 
-            {msg.sending && <small> Sending...</small>}
-          </div>
-        ))}
-      </div>
+        <div    style={{padding: "20px"}}>
+            {optimisticMessage.map((msg, index) => (
+                <p  key={index} style={{opacity: msg.sending ? 0.5 : 1}}>
+                    {msg.text} {msg.sending && "(Sending...)"}
+                </p>
+            ))}
 
-      <form action={sendMessageAction} ref={formRef}>
-        <input name="message" placeholder="WRite Your Message Here ..." required />
-        <button type="submit">Send</button>
-      </form>
-    </div>
+            <form action={handleSend}>
+                <input type="text" name='message' placeholder='Type a message ...' />
+                <button type='submit'>Send</button>
+            </form>
+
+        </div>
     )
 }
