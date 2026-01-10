@@ -9,6 +9,12 @@ import UseLayoutEffect from './components/TestUseLayoutEffect'
 import TestUseMemo from './components/TestUseMemo'
 import TestUseCallback from './components/TestUseCallback/TestUseCallback'
 import TestingCostumHook from './components/CostumHooks/TestUseFetchExample'
+import UseTransition from './components/UseTransition'
+import UseDeferredValue from './components/UseDeferredValue'
+import UseEffectEvent from './components/UseEffectEvent'
+import JokeApp from './components/UseHook'
+import ProfileNew from './components/UseActionState'
+import ChatRoom from './components/UseOptimistic'
 function App() {
 
   return (
@@ -30,6 +36,18 @@ function App() {
       <TestUseCallback />
       <hr class="border-t border-gray-300 my-4" />
       <TestingCostumHook />
+      <hr class="border-t border-gray-300 my-4" />
+      <UseTransition />
+      <hr class="border-t border-gray-300 my-4" />
+      <UseDeferredValue />
+      <hr class="border-t border-gray-300 my-4" />
+      <UseEffectEvent />
+      <hr class="border-t border-gray-300 my-4" />
+      <JokeApp />
+      <hr class="border-t border-gray-300 my-4" />
+      <ProfileNew />
+      <hr class="border-t border-gray-300 my-4" />
+      <ChatRoom />
     </>
   )
 }
